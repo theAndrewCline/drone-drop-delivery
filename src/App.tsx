@@ -25,12 +25,14 @@ function Form() {
 function App() {
   return (
     <>
-      <nav className="fixed w-screen flex bg-green-600 mr-4 p-2 items-center shadow-xl">
-        <Drone className="h-14 w-14 flex items-center justify-center transform -translate-y-2 ml-2" />
-        <h1 className="text-white text-2xl font-bold ml-2">
-          Drone Drop Delivery
-        </h1>
-      </nav>
+      <div className="fixed w-screen bg-green-600 shadow-xl">
+        <nav className="max-w-screen-2xl m-auto flex p-2 items-center">
+          <Drone className="h-14 w-14 flex items-center justify-center transform -translate-y-2 ml-2" />
+          <h1 className="text-white text-2xl font-bold ml-2">
+            Drone Drop Delivery
+          </h1>
+        </nav>
+      </div>
       <div className="flex flex-1 justify-center items-center min-h-screen">
         <Form />
       </div>
