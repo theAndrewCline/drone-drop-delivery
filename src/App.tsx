@@ -1,23 +1,55 @@
-import React from 'react'
-import { Drone } from './Drone'
-import logo from './logo.svg'
+import React, { useState } from 'react'
+import { DroneDelivery } from './DroneDelivery'
+import { PaperPlane } from './PaperPlane'
 import './tailwind.output.css'
 
 function Form() {
+  const [addressHasFocus, setAddressHasFocus] = useState(false)
+
   return (
-    <div className="App-header bg-gray-200 p-4 rounded-2xl flex flex-col items-center bg-opactiy-0 z-10">
-      <img src={logo} className="App-logo m-2" alt="logo" />
-      <p className="bg-green-500 text-white transition duration-500 hover:bg-green-600 p-2 mb-4 rounded">
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
+    <div className="bg-gray-200 p-4 px-12 rounded-2xl flex flex-col items-center bg-opactiy-0 z-10 shadow-lg">
+      <PaperPlane className="h-16 mb-4" />
+      <h1 className="font-bold text-2xl mb-4">Add Your Location</h1>
+
+      <div className="flex flex-col justify-left mb-4">
+        <label className="text-xl mb-2" htmlFor="name">
+          Name:
+        </label>
+        <input
+          className="text-xl rounded px-4 py-2 border-2 border-solid border-gray-300"
+          type="text"
+          placeholder="Jane Doe"
+        />
+      </div>
+
+      <div className="flex flex-col justify-left mb-4">
+        <label className="text-xl mb-2" htmlFor="address">
+          Address:
+        </label>
+        <input
+          className="text-xl rounded px-4 py-2 border-2 border-solid border-gray-300"
+          type="text"
+          placeholder="123 Charming Ave"
+          list="addresses"
+        />
+      </div>
+
+      <button className="font-bold bg-green-500 text-white transition duration-500 hover:bg-green-600 hover:shadow-xl py-2 px-4 my-4 rounded">
+        Add Location
+      </button>
+    </div>
+  )
+}
+
+function Nav() {
+  return (
+    <div className="fixed w-screen bg-white p-4 z-20">
+      <nav className="max-w-screen-2xl m-auto flex p-2 items-center">
+        <PaperPlane className="h-8" />
+        <h1 className="text-green-600 text-2xl font-bold ml-4">
+          Drone Drop Delivery
+        </h1>
+      </nav>
     </div>
   )
 }
@@ -25,16 +57,12 @@ function Form() {
 function App() {
   return (
     <>
-      <div className="fixed w-screen bg-green-600 shadow-xl">
-        <nav className="max-w-screen-2xl m-auto flex p-2 items-center">
-          <Drone className="h-14 w-14 flex items-center justify-center transform -translate-y-2 ml-2" />
-          <h1 className="text-white text-2xl font-bold ml-2">
-            Drone Drop Delivery
-          </h1>
-        </nav>
-      </div>
-      <div className="flex flex-1 justify-center items-center min-h-screen">
+      <Nav />
+      <div className="flex flex-1 flex-col justify-center items-center min-h-screen">
         <Form />
+        <div className="absolute">
+          <DroneDelivery />
+        </div>
       </div>
     </>
   )
