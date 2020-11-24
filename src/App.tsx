@@ -1,13 +1,21 @@
-import React, { useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { DroneDelivery } from './DroneDelivery'
 import { PaperPlane } from './PaperPlane'
 import './tailwind.output.css'
 
 function Form() {
-  const [addressHasFocus, setAddressHasFocus] = useState(false)
+  const nameRef = useRef(null)
+
+  useEffect(() => {
+    const el = (nameRef.current as unknown) as HTMLElement
+    el.focus()
+  }, [])
 
   return (
-    <div className="bg-gray-200 p-4 px-12 rounded-2xl flex flex-col items-center bg-opactiy-0 z-10 shadow-lg">
+    <div
+      id="add-info-form"
+      className="bg-gray-200 p-4 px-12 rounded-2xl flex flex-col items-center bg-opactiy-0 z-10 shadow-lg"
+    >
       <PaperPlane className="h-16 mb-4" />
       <h1 className="font-bold text-2xl mb-4">Add Your Location</h1>
 
@@ -16,6 +24,8 @@ function Form() {
           Name:
         </label>
         <input
+          id="name"
+          ref={nameRef}
           className="text-xl rounded px-4 py-2 border-2 border-solid border-gray-300"
           type="text"
           placeholder="Jane Doe"
@@ -27,6 +37,7 @@ function Form() {
           Address:
         </label>
         <input
+          id="address"
           className="text-xl rounded px-4 py-2 border-2 border-solid border-gray-300"
           type="text"
           placeholder="123 Charming Ave"
