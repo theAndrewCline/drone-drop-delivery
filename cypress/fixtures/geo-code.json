@@ -1,0 +1,85 @@
+{
+  "geocoding": {
+    "version": "0.2",
+    "attribution": "https://geocodeapi.io/attribution",
+    "query": {
+      "text": "1501 Gardener Ln,Apt 1512,Peoria Heights,IL,61616",
+      "size": 10,
+      "private": false,
+      "lang": {
+        "name": "English",
+        "iso6391": "en",
+        "iso6393": "eng",
+        "defaulted": true
+      },
+      "querySize": 20,
+      "parser": "libpostal",
+      "parsed_text": {
+        "housenumber": "1501",
+        "street": "gardener ln",
+        "unit": "apt 1512",
+        "city": "peoria heights",
+        "state": "il",
+        "postalcode": "61616"
+      }
+    },
+    "engine": {
+      "name": "Pelias",
+      "author": "Mapzen",
+      "version": "1.0"
+    },
+    "timestamp": 1606266834671
+  },
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -89.550837,
+          40.784025
+        ]
+      },
+      "properties": {
+        "id": "85939401",
+        "gid": "whosonfirst:locality:85939401",
+        "layer": "locality",
+        "source": "whosonfirst",
+        "source_id": "85939401",
+        "name": "Peoria Heights",
+        "confidence": 0.6,
+        "match_type": "fallback",
+        "accuracy": "centroid",
+        "country": "United States",
+        "country_gid": "whosonfirst:country:85633793",
+        "country_a": "USA",
+        "region": "Illinois",
+        "region_gid": "whosonfirst:region:85688697",
+        "region_a": "IL",
+        "county": "Woodford County",
+        "county_gid": "whosonfirst:county:102082857",
+        "county_a": "WO",
+        "localadmin": "Spring Bay Township",
+        "localadmin_gid": "whosonfirst:localadmin:404499451",
+        "locality": "Peoria Heights",
+        "locality_gid": "whosonfirst:locality:85939401",
+        "continent": "North America",
+        "continent_gid": "whosonfirst:continent:102191575",
+        "label": "Peoria Heights, IL, USA"
+      },
+      "bbox": [
+        -89.591006,
+        40.728614,
+        -89.535455,
+        40.79915
+      ]
+    }
+  ],
+  "bbox": [
+    -89.591006,
+    40.728614,
+    -89.535455,
+    40.79915
+  ]
+}
