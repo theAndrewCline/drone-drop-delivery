@@ -1,0 +1,61 @@
+{
+  "lookups": [
+    {
+      "street": "1501 Gardener Ln",
+      "secondary": "Apt 1512",
+      "city": "Peoria Heights",
+      "state": "Illinois",
+      "zipCode": "61616",
+      "maxCandidates": 1,
+      "result": [
+        {
+          "inputIndex": 0,
+          "candidateIndex": 0,
+          "deliveryLine1": "1501 E Gardner Ln Apt 1512",
+          "lastLine": "Peoria Heights IL 61616-3643",
+          "deliveryPointBarcode": "616163643879",
+          "components": {
+            "primaryNumber": "1501",
+            "streetName": "Gardner",
+            "streetPredirection": "E",
+            "streetSuffix": "Ln",
+            "secondaryNumber": "1512",
+            "secondaryDesignator": "Apt",
+            "cityName": "Peoria Heights",
+            "defaultCityName": "Peoria Heights",
+            "state": "IL",
+            "zipCode": "61616",
+            "plus4Code": "3643",
+            "deliveryPoint": "87",
+            "deliveryPointCheckDigit": "9"
+          },
+          "metadata": {
+            "recordType": "H",
+            "zipType": "Standard",
+            "countyFips": "17143",
+            "countyName": "Peoria",
+            "carrierRoute": "C075",
+            "congressionalDistrict": "18",
+            "rdi": "Residential",
+            "elotSequence": "0071",
+            "elotSort": "A",
+            "latitude": 40.75808,
+            "longitude": -89.57094,
+            "precision": "Zip9",
+            "timeZone": "Central",
+            "utcOffset": -6,
+            "obeysDst": true
+          },
+          "analysis": {
+            "dpvMatchCode": "Y",
+            "dpvFootnotes": "AABB",
+            "cmra": "N",
+            "vacant": "N",
+            "active": "Y",
+            "footnotes": "L#M#"
+          }
+        }
+      ]
+    }
+  ]
+}

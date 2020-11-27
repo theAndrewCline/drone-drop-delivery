@@ -1,28 +1,22 @@
-function locationToUrl(location: Location): string {
-  const apiKey = Cypress.env('geo_key')
-  const url = `https://app.geocodeapi.io/api/v1/search?apikey=${apiKey}&text=${location.address},${location.unit},${location.city},${location.state},${location.zip}`
-  return encodeURI(url)
-}
-
 describe('Add Location Page', function () {
   it('should have the correct form', function () {
     const location = {
-      address: '1501 Gardener Ln',
+      street: '1501 Gardener Ln',
       unit: 'Apt 1512',
       city: 'Peoria Heights',
       state: 'IL',
       zip: '61616'
     }
 
-    const route = locationToUrl(location)
-    console.log(route)
-    cy.intercept(locationToUrl(location), 'geo-code.json').as('getGeoCode')
+    const route = `https://us-street.api.smartystreets.com/street-address?street=1501+Gardener+Ln&secondary=Apt+1512&city=Peoria+Heights&state=IL&zipcode=61616&candidates=1&agent=smartystreets+(sdk:javascript@1.6.0)&auth-id=54115129441651870`
+
+    cy.intercept(route, { fixture: 'gardener-lookup.json' }).as('addressLookup')
 
     cy.visit('localhost:3000')
 
     cy.get('#add-info-form').find('#name').type('Andrew Cline')
 
-    cy.get('#add-info-form').find('#address').type(location.address)
+    cy.get('#add-info-form').find('#street').type(location.street)
 
     cy.get('#add-info-form').find('#unit').type(location.unit)
 
@@ -34,27 +28,27 @@ describe('Add Location Page', function () {
 
     cy.get('#add-info-form').find('button').contains('Add Location').click()
 
-    cy.wait('@getGeoCode')
+    cy.wait('@addressLookup')
   })
 
   it('should have the correct form', function () {
     const location = {
-      address: '1021 N Summit Blvd',
+      street: '1021 N Summit Blvd',
       unit: '',
       city: 'Peoria',
       state: 'IL',
       zip: '61606'
     }
 
-    const route = locationToUrl(location)
-    console.log(route)
-    cy.intercept(locationToUrl(location), 'geo-code.json').as('getGeoCode')
+    const route = `https://us-street.api.smartystreets.com/street-address?street=1021+N+Summit+Blvd&city=Peoria&state=IL&zipcode=61606&candidates=1&agent=smartystreets+(sdk:javascript@1.6.0)&auth-id=54115129441651870`
+
+    cy.intercept(route, { fixture: 'summit-lookup.json' }).as('locationLookup')
 
     cy.visit('localhost:3000')
 
     cy.get('#add-info-form').find('#name').type('Andrew Cline')
 
-    cy.get('#add-info-form').find('#address').type(location.address)
+    cy.get('#add-info-form').find('#street').type(location.street)
 
     cy.get('#add-info-form').find('#unit')
 
@@ -66,6 +60,6 @@ describe('Add Location Page', function () {
 
     cy.get('#add-info-form').find('button').contains('Add Location').click()
 
-    cy.wait('@getGeoCode')
+    cy.wait('@locationLookup')
   })
 })

@@ -1,0 +1,58 @@
+{
+  "lookups": [
+    {
+      "street": "1021 N Summit Blvd",
+      "secondary": "",
+      "city": "Peoria",
+      "state": "Illinois",
+      "zipCode": "61606",
+      "maxCandidates": 1,
+      "result": [
+        {
+          "inputIndex": 0,
+          "candidateIndex": 0,
+          "deliveryLine1": "1021 N Summit Blvd",
+          "lastLine": "Peoria IL 61606-1079",
+          "deliveryPointBarcode": "616061079211",
+          "components": {
+            "primaryNumber": "1021",
+            "streetName": "Summit",
+            "streetPredirection": "N",
+            "streetSuffix": "Blvd",
+            "cityName": "Peoria",
+            "defaultCityName": "Peoria",
+            "state": "IL",
+            "zipCode": "61606",
+            "plus4Code": "1079",
+            "deliveryPoint": "21",
+            "deliveryPointCheckDigit": "1"
+          },
+          "metadata": {
+            "recordType": "S",
+            "zipType": "Standard",
+            "countyFips": "17143",
+            "countyName": "Peoria",
+            "carrierRoute": "C051",
+            "congressionalDistrict": "17",
+            "rdi": "Residential",
+            "elotSequence": "0047",
+            "elotSort": "A",
+            "latitude": 40.69978,
+            "longitude": -89.62211,
+            "precision": "Zip9",
+            "timeZone": "Central",
+            "utcOffset": -6,
+            "obeysDst": true
+          },
+          "analysis": {
+            "dpvMatchCode": "Y",
+            "dpvFootnotes": "AABB",
+            "cmra": "N",
+            "vacant": "N",
+            "active": "Y"
+          }
+        }
+      ]
+    }
+  ]
+}

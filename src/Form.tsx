@@ -1,10 +1,7 @@
 import React, { useRef, RefObject, useState } from 'react'
-import { locationToUrl, Location } from './lib/location'
+import { Redirect } from 'react-router-dom'
+import { validateAddress, Address } from './lib/address'
 import { PaperPlane } from './PaperPlane'
-
-async function getGeoCode(url: string): Promise<any> {
-  return fetch(url).then((d) => d.json())
-}
 
 type FormItemProps = {
   label: string
@@ -33,22 +30,21 @@ function FormItem({ label, placeholder, ref, onInput }: FormItemProps) {
 
 export function Form() {
   const nameRef = useRef(null)
+  const [isValidated, setIsValidated] = useState(false)
 
-  const [location, setLocation] = useState<Location>({
-    address: '',
-    unit: '',
+  const [address, setAddress] = useState<Address>({
+    street: '',
+    secondary: '',
     city: '',
     state: '',
     zip: ''
   })
 
-  async function handleFormSubmit() {
-    try {
-      const geoCodeData = await getGeoCode(locationToUrl(location))
-      console.log(geoCodeData)
-    } catch (e) {
-      console.error(e)
-    }
+  function handleFormSubmit() {
+    validateAddress(address).then((x) => {
+      console.log(x)
+      setIsValidated(true)
+    })
   }
 
   return (
@@ -61,38 +57,38 @@ export function Form() {
 
       <FormItem label="name" placeholder="Jane Doe" ref={nameRef} />
       <FormItem
-        label="address"
+        label="street"
         placeholder="123 Charming Ave"
         onInput={(e) => {
-          setLocation({ ...location, address: e.target.value })
+          setAddress({ ...address, street: e.target.value })
         }}
       />
       <FormItem
         label="unit"
         placeholder="Apt 2"
         onInput={(e) => {
-          setLocation({ ...location, unit: e.target.value })
+          setAddress({ ...address, secondary: e.target.value })
         }}
       />
       <FormItem
         label="city"
         placeholder="New York"
         onInput={(e) => {
-          setLocation({ ...location, city: e.target.value })
+          setAddress({ ...address, city: e.target.value })
         }}
       />
       <FormItem
         label="state"
         placeholder="New York"
         onInput={(e) => {
-          setLocation({ ...location, state: e.target.value })
+          setAddress({ ...address, state: e.target.value })
         }}
       />
       <FormItem
         label="zip"
         placeholder="11201"
         onInput={(e) => {
-          setLocation({ ...location, zip: e.target.value })
+          setAddress({ ...address, zip: e.target.value })
         }}
       />
 
@@ -104,6 +100,8 @@ export function Form() {
       >
         Add Location
       </button>
+
+      {isValidated ? <Redirect to="/users" /> : null}
     </div>
   )
 }
