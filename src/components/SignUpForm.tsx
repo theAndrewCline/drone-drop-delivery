@@ -1,7 +1,7 @@
 import React, { useRef, RefObject, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { validateAddress, Address } from './lib/address'
-import { PaperPlane } from './PaperPlane'
+import { validateAddress, Address } from '../lib/address'
+import { PaperPlane } from './svg/PaperPlane'
 
 type FormItemProps = {
   label: string
@@ -28,7 +28,7 @@ function FormItem({ label, placeholder, ref, onInput }: FormItemProps) {
   )
 }
 
-export function Form() {
+export function SignUpForm() {
   const nameRef = useRef(null)
   const [isValidated, setIsValidated] = useState(false)
 

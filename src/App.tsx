@@ -1,7 +1,7 @@
 import React from 'react'
-import { Form } from './Form'
-import { DroneDelivery } from './DroneDelivery'
-import { PaperPlane } from './PaperPlane'
+import { SignUpPage } from './pages/SignUp'
+import { UsersPage } from './pages/Users'
+import { PaperPlane } from './components/svg/PaperPlane'
 import './tailwind.output.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
@@ -18,25 +18,6 @@ function Nav() {
   )
 }
 
-function Page({ children }: any) {
-  return (
-    <div className="flex flex-col items-center justify-center flex-1 min-h-screen">
-      {children}
-    </div>
-  )
-}
-
-function SignUpPage() {
-  return (
-    <Page>
-      <Form />
-      <div className="absolute">
-        <DroneDelivery />
-      </div>
-    </Page>
-  )
-}
-
 function App() {
   return (
     <Router>
@@ -47,9 +28,7 @@ function App() {
           <SignUpPage />
         </Route>
         <Route path="/users">
-          <Page>
-            <h1>Users</h1>
-          </Page>
+          <UsersPage />
         </Route>
       </Switch>
     </Router>
