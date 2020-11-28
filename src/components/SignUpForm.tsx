@@ -2,6 +2,8 @@ import React, { useRef, RefObject, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { validateAddress, Address } from '../lib/address'
 import { PaperPlane } from './svg/PaperPlane'
+import { User } from '../lib/user'
+import { gql, useMutation } from '@apollo/client'
 
 type FormItemProps = {
   label: string
@@ -28,23 +30,73 @@ function FormItem({ label, placeholder, ref, onInput }: FormItemProps) {
   )
 }
 
-export function SignUpForm() {
-  const nameRef = useRef(null)
-  const [isValidated, setIsValidated] = useState(false)
+function resultToAddress(result: any): Address {
+  return {
+    street: result.deliveryLine1,
+    secondary: result.deliveryLine2,
+    city: result.components.cityName,
+    state: result.components.state,
+    zipcode: result.components.zipCode,
+    geo: {
+      lat: result.metadata.latitude,
+      lng: result.metadata.longitude
+    }
+  }
+}
 
+function createUser(name: string, address: Address): User {
+  return {
+    ts: new Date().toISOString(),
+    name,
+    address
+  }
+}
+
+const ADD_USER = gql`
+  mutation AddUser($user: UserInput!) {
+    createUser(data: $user) {
+      _id
+    }
+  }
+`
+
+function addUserToDb(user: User): any {
+  const query = gql`createUser( data: ${user}) { _id }`
+}
+
+export function SignUpForm() {
+  const [isValidated, setIsValidated] = useState(false)
+  const [addUser, { data }] = useMutation(ADD_USER)
+
+  const [name, setName] = useState<string>('')
   const [address, setAddress] = useState<Address>({
     street: '',
     secondary: '',
     city: '',
     state: '',
-    zip: ''
+    zipcode: '',
+    geo: {
+      lat: 0,
+      lng: 0
+    }
   })
 
   function handleFormSubmit() {
-    validateAddress(address).then((x) => {
-      console.log(x)
-      setIsValidated(true)
-    })
+    validateAddress(address)
+      .then((data) => {
+        if (data.lookups[0].result.length > 0) {
+          return data.lookups[0].result[0]
+        } else {
+          throw new Error('Address Is Not Valid')
+        }
+      })
+      .then(resultToAddress)
+      .then((a: Address) => createUser(name, a))
+      .then((user) => addUser({ variables: { user } }))
+      .then(() => {
+        setIsValidated(true)
+      })
+      .catch(console.error)
   }
 
   return (
@@ -55,7 +107,13 @@ export function SignUpForm() {
       <PaperPlane className="h-16 mb-4" />
       <h1 className="mb-4 text-2xl font-bold">Add Your Location</h1>
 
-      <FormItem label="name" placeholder="Jane Doe" ref={nameRef} />
+      <FormItem
+        label="name"
+        placeholder="Jane Doe"
+        onInput={(e) => {
+          setName(e.target.value)
+        }}
+      />
       <FormItem
         label="street"
         placeholder="123 Charming Ave"
@@ -88,7 +146,7 @@ export function SignUpForm() {
         label="zip"
         placeholder="11201"
         onInput={(e) => {
-          setAddress({ ...address, zip: e.target.value })
+          setAddress({ ...address, zipcode: e.target.value })
         }}
       />
 

@@ -5,7 +5,11 @@ export type Address = {
   secondary?: string
   city: string
   state: string
-  zip: string
+  zipcode: string
+  geo: {
+    lat: number
+    lng: number
+  }
 }
 
 const key = process.env.REACT_APP_SMARTY_WEBSITE_KEY as string
@@ -22,7 +26,7 @@ export function validateAddress(address: Address): Promise<any> {
   lookup.secondary = address.secondary || ''
   lookup.city = address.city
   lookup.state = address.state
-  lookup.zipCode = address.zip
+  lookup.zipCode = address.zipcode
   lookup.maxCandidates = 1
 
   return client.send(lookup)

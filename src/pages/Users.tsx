@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from 'react'
+import { useQuery, gql } from '@apollo/client'
 import { Page } from './BasePage'
-
-type User = {
-  id: string
-  name: string
-  address: {
-    street: string
-    secondary: string
-    city: string
-    zip: string
-    geo: {
-      lat: number
-      lng: number
-    }
-  }
-}
+import { User } from '../lib/user'
 
 type ULIProps = {
   user: User
-  key: string
 }
+
+const query = gql`
+  query GetUsers {
+    users {
+      data {
+        _id
+        name
+        address {
+          street
+          secondary
+          geo {
+            lat
+            lng
+          }
+        }
+      }
+    }
+  }
+`
 
 function UserLi({ user }: ULIProps) {
   return (
@@ -45,14 +50,18 @@ function UserLi({ user }: ULIProps) {
 export function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
 
+  const { loading, error, data } = useQuery(query)
+
   useEffect(() => {
-    fetch('https://www.database.com')
-      .then((data) => data.json())
-      .then((data) => {
-        const users = (data as unknown) as User[]
-        setUsers(users)
-      })
-  }, [])
+    console.log(error)
+  }, [error])
+
+  useEffect(() => {
+    if (!loading) {
+      console.log(data)
+      setUsers(data.users.data)
+    }
+  }, [data, loading])
 
   return (
     <Page>
@@ -60,7 +69,7 @@ export function UsersPage() {
         <h1 className="mb-4 ml-4 text-2xl font-bold">Active Users</h1>
         <ul id="users" className="w-full bg-gray-100 rounded-lg shadow-lg">
           {users.map((user: User) => {
-            return <UserLi user={user} key={user.id} />
+            return <UserLi user={user} key={user._id} />
           })}
         </ul>
       </div>

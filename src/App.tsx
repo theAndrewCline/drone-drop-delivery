@@ -4,6 +4,10 @@ import { UsersPage } from './pages/Users'
 import { PaperPlane } from './components/svg/PaperPlane'
 import './tailwind.output.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { ApolloProvider } from '@apollo/client'
+import { setupApollo } from './lib/apolloSetup'
+
+const apolloClient = setupApollo()
 
 function Nav() {
   return (
@@ -20,18 +24,20 @@ function Nav() {
 
 function App() {
   return (
-    <Router>
-      <Nav />
+    <ApolloProvider client={apolloClient}>
+      <Router>
+        <Nav />
 
-      <Switch>
-        <Route exact path="/">
-          <SignUpPage />
-        </Route>
-        <Route path="/users">
-          <UsersPage />
-        </Route>
-      </Switch>
-    </Router>
+        <Switch>
+          <Route exact path="/">
+            <SignUpPage />
+          </Route>
+          <Route path="/users">
+            <UsersPage />
+          </Route>
+        </Switch>
+      </Router>
+    </ApolloProvider>
   )
 }
 
