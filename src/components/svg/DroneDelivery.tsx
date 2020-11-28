@@ -21,14 +21,14 @@ export function DroneDelivery() {
           y2="91.11"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="gray" stop-opacity="0.25" id="stop425" />
+          <stop offset="0" stopColor="gray" stopOpacity="0.25" id="stop425" />
           <stop
             offset="0.54"
-            stop-color="gray"
-            stop-opacity="0.12"
+            stopColor="gray"
+            stopOpacity="0.12"
             id="stop427"
           />
-          <stop offset="1" stop-color="gray" stop-opacity="0.1" id="stop429" />
+          <stop offset="1" stopColor="gray" stopOpacity="0.1" id="stop429" />
         </linearGradient>
         <linearGradient
           id="5bed69c4-1e02-4930-aaf9-54950fab6759"
@@ -795,7 +795,7 @@ export function DroneDelivery() {
         transform="translate(-120.51 -91.11)"
         fill="none"
         stroke="#535461"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         id="path676"
       />
       <path
@@ -816,7 +816,7 @@ export function DroneDelivery() {
         transform="translate(-120.51 -91.11)"
         fill="none"
         stroke="#535461"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         id="path682"
       />
       <path
@@ -836,8 +836,8 @@ export function DroneDelivery() {
         transform="translate(-120.51 -91.11)"
         fill="none"
         stroke="#535461"
-        stroke-miterlimit="10"
-        stroke-width="2"
+        strokeMiterlimit="10"
+        strokeWidth="2"
         id="path688"
       />
       <path

@@ -1,9 +1,6 @@
-import React, { useRef, RefObject, useState } from 'react'
-import { Redirect } from 'react-router-dom'
-import { validateAddress, Address } from '../lib/address'
-import { PaperPlane } from './svg/PaperPlane'
-import { User } from '../lib/user'
-import { gql, useMutation } from '@apollo/client'
+import React, { RefObject } from "react"
+import { Address } from "../lib/address"
+import { PaperPlane } from "./svg/PaperPlane"
 
 type FormItemProps = {
   label: string
@@ -30,136 +27,76 @@ function FormItem({ label, placeholder, ref, onInput }: FormItemProps) {
   )
 }
 
-function resultToAddress(result: any): Address {
-  return {
-    street: result.deliveryLine1,
-    secondary: result.deliveryLine2,
-    city: result.components.cityName,
-    state: result.components.state,
-    zipcode: result.components.zipCode,
-    geo: {
-      lat: result.metadata.latitude,
-      lng: result.metadata.longitude
-    }
-  }
+type SignUpFormProps = {
+  setName: (a: string) => void
+  setAddress: (a: Address) => void
+  address: Address
+  handleFormSubmit: () => void
 }
 
-function createUser(name: string, address: Address): User {
-  return {
-    ts: new Date().toISOString(),
-    name,
-    address
-  }
-}
+export const SignUpForm = ({
+  setName,
+  setAddress,
+  address,
+  handleFormSubmit,
+}: SignUpFormProps) => (
+  <div
+    id="add-info-form"
+    className="z-10 flex flex-col items-center p-4 px-12 bg-gray-200 shadow-lg rounded-2xl bg-opactiy-0"
+  >
+    <PaperPlane className="h-16 mb-4" />
+    <h1 className="mb-4 text-2xl font-bold">Add Your Location</h1>
 
-const ADD_USER = gql`
-  mutation AddUser($user: UserInput!) {
-    createUser(data: $user) {
-      _id
-    }
-  }
-`
+    <FormItem
+      label="name"
+      placeholder="Jane Doe"
+      onInput={(e) => {
+        setName(e.target.value)
+      }}
+    />
+    <FormItem
+      label="street"
+      placeholder="123 Charming Ave"
+      onInput={(e) => {
+        setAddress({ ...address, street: e.target.value })
+      }}
+    />
+    <FormItem
+      label="unit"
+      placeholder="Apt 2"
+      onInput={(e) => {
+        setAddress({ ...address, secondary: e.target.value })
+      }}
+    />
+    <FormItem
+      label="city"
+      placeholder="New York"
+      onInput={(e) => {
+        setAddress({ ...address, city: e.target.value })
+      }}
+    />
+    <FormItem
+      label="state"
+      placeholder="New York"
+      onInput={(e) => {
+        setAddress({ ...address, state: e.target.value })
+      }}
+    />
+    <FormItem
+      label="zip"
+      placeholder="11201"
+      onInput={(e) => {
+        setAddress({ ...address, zipcode: e.target.value })
+      }}
+    />
 
-function addUserToDb(user: User): any {
-  const query = gql`createUser( data: ${user}) { _id }`
-}
-
-export function SignUpForm() {
-  const [isValidated, setIsValidated] = useState(false)
-  const [addUser, { data }] = useMutation(ADD_USER)
-
-  const [name, setName] = useState<string>('')
-  const [address, setAddress] = useState<Address>({
-    street: '',
-    secondary: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    geo: {
-      lat: 0,
-      lng: 0
-    }
-  })
-
-  function handleFormSubmit() {
-    validateAddress(address)
-      .then((data) => {
-        if (data.lookups[0].result.length > 0) {
-          return data.lookups[0].result[0]
-        } else {
-          throw new Error('Address Is Not Valid')
-        }
-      })
-      .then(resultToAddress)
-      .then((a: Address) => createUser(name, a))
-      .then((user) => addUser({ variables: { user } }))
-      .then(() => {
-        setIsValidated(true)
-      })
-      .catch(console.error)
-  }
-
-  return (
-    <div
-      id="add-info-form"
-      className="z-10 flex flex-col items-center p-4 px-12 bg-gray-200 shadow-lg rounded-2xl bg-opactiy-0"
+    <button
+      onClick={(_) => {
+        handleFormSubmit()
+      }}
+      className="px-4 py-2 my-4 font-bold text-white bg-green-500 rounded transition duration-500 hover:bg-green-600 hover:shadow-xl"
     >
-      <PaperPlane className="h-16 mb-4" />
-      <h1 className="mb-4 text-2xl font-bold">Add Your Location</h1>
-
-      <FormItem
-        label="name"
-        placeholder="Jane Doe"
-        onInput={(e) => {
-          setName(e.target.value)
-        }}
-      />
-      <FormItem
-        label="street"
-        placeholder="123 Charming Ave"
-        onInput={(e) => {
-          setAddress({ ...address, street: e.target.value })
-        }}
-      />
-      <FormItem
-        label="unit"
-        placeholder="Apt 2"
-        onInput={(e) => {
-          setAddress({ ...address, secondary: e.target.value })
-        }}
-      />
-      <FormItem
-        label="city"
-        placeholder="New York"
-        onInput={(e) => {
-          setAddress({ ...address, city: e.target.value })
-        }}
-      />
-      <FormItem
-        label="state"
-        placeholder="New York"
-        onInput={(e) => {
-          setAddress({ ...address, state: e.target.value })
-        }}
-      />
-      <FormItem
-        label="zip"
-        placeholder="11201"
-        onInput={(e) => {
-          setAddress({ ...address, zipcode: e.target.value })
-        }}
-      />
-
-      <button
-        onClick={(_) => {
-          handleFormSubmit()
-        }}
-        className="px-4 py-2 my-4 font-bold text-white bg-green-500 rounded transition duration-500 hover:bg-green-600 hover:shadow-xl"
-      >
-        Add Location
-      </button>
-
-      {isValidated ? <Redirect to="/users" /> : null}
-    </div>
-  )
-}
+      Add Location
+    </button>
+  </div>
+)

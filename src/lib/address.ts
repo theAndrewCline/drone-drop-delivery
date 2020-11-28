@@ -12,6 +12,20 @@ export type Address = {
   }
 }
 
+export function resultToAddress(result: any): Address {
+  return {
+    street: result.deliveryLine1,
+    secondary: result.deliveryLine2,
+    city: result.components.cityName,
+    state: result.components.state,
+    zipcode: result.components.zipCode,
+    geo: {
+      lat: result.metadata.latitude,
+      lng: result.metadata.longitude
+    }
+  }
+}
+
 const key = process.env.REACT_APP_SMARTY_WEBSITE_KEY as string
 const credentials = new SmartyStreets.SharedCredentials(key)
 const client = SmartyStreets.buildClient.usStreet(credentials)
@@ -20,7 +34,7 @@ const Lookup = usStreet.Lookup
 
 export type Lookup = typeof Lookup
 
-export function validateAddress(address: Address): Promise<any> {
+export function validateAddress(address: Address): Promise<Address> {
   let lookup = new Lookup()
   lookup.street = address.street
   lookup.secondary = address.secondary || ''
@@ -30,4 +44,12 @@ export function validateAddress(address: Address): Promise<any> {
   lookup.maxCandidates = 1
 
   return client.send(lookup)
+    .then((data: any) => {
+      if (data?.lookups[0]?.result?.length > 0) {
+        return data.lookups[0].result[0]
+      } else {
+        throw new Error('Address Is Not Valid')
+      }
+    })
+    .then(resultToAddress)
 }
