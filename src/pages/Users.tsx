@@ -37,7 +37,7 @@ const UserLi = ({ user }: ULIProps) => (
     <div className="flex-1">
       <h1>{user.address.street}</h1>
     </div>
-    <div className="flex-1 ml-auto">
+    <div className="flex-1">
       <h1>
         Lat: {user.address.geo.lat}, Long: {user.address.geo.lng}
       </h1>

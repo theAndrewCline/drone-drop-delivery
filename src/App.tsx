@@ -11,8 +11,8 @@ const apolloClient = setupApollo()
 
 function Nav() {
   return (
-    <div className="fixed z-20 w-screen p-4 bg-white">
-      <nav className="flex items-center p-2 m-auto max-w-screen-2xl">
+    <div className="w-screen p-4 bg-white">
+      <nav className="flex items-center p-2 m-auto max-w-screen-lg">
         <PaperPlane className="h-8" />
         <h1 className="ml-4 text-2xl font-bold text-green-600">
           Drone Drop Delivery
@@ -37,6 +37,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
+
     </ApolloProvider>
   )
 }

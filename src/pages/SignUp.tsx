@@ -6,6 +6,7 @@ import { SignUpForm } from '../components/SignUpForm'
 export function SignUpPage() {
   return (
     <Page>
+      <div className="flex items-center justify-center flex-col"></div>
       <SignUpForm />
       <div className="absolute">
         <DroneDelivery />
