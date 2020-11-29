@@ -27,7 +27,7 @@ const UserLi = ({ user }: ULIProps) => (
 enum UsersPageState {
   Loading,
   NoUsers,
-  Users,
+  Users
 }
 
 const UserList = () => {
@@ -72,7 +72,7 @@ const UserList = () => {
 export function UsersPage() {
   return (
     <Page>
-      <div className="w-full">
+      <div className="z-10 w-full">
         <UserList />
       </div>
     </Page>
