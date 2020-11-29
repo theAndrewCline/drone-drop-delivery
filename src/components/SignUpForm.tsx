@@ -1,6 +1,7 @@
-import React, { RefObject } from "react"
-import { Address } from "../lib/address"
-import { PaperPlane } from "./svg/PaperPlane"
+import React, { RefObject } from 'react'
+import { Address } from '../lib/address'
+import { PaperPlane } from './svg/PaperPlane'
+import Bounce from 'react-reveal/Bounce'
 
 type FormItemProps = {
   label: string
@@ -38,65 +39,67 @@ export const SignUpForm = ({
   setName,
   setAddress,
   address,
-  handleFormSubmit,
+  handleFormSubmit
 }: SignUpFormProps) => (
-  <div
-    id="add-info-form"
-    className="z-10 flex flex-col items-center p-4 px-12 bg-gray-200 shadow-lg rounded-2xl bg-opactiy-0"
-  >
-    <PaperPlane className="h-16 mb-4" />
-    <h1 className="mb-4 text-2xl font-bold">Add Your Location</h1>
-
-    <FormItem
-      label="name"
-      placeholder="Jane Doe"
-      onInput={(e) => {
-        setName(e.target.value)
-      }}
-    />
-    <FormItem
-      label="street"
-      placeholder="123 Charming Ave"
-      onInput={(e) => {
-        setAddress({ ...address, street: e.target.value })
-      }}
-    />
-    <FormItem
-      label="unit"
-      placeholder="Apt 2"
-      onInput={(e) => {
-        setAddress({ ...address, secondary: e.target.value })
-      }}
-    />
-    <FormItem
-      label="city"
-      placeholder="New York"
-      onInput={(e) => {
-        setAddress({ ...address, city: e.target.value })
-      }}
-    />
-    <FormItem
-      label="state"
-      placeholder="New York"
-      onInput={(e) => {
-        setAddress({ ...address, state: e.target.value })
-      }}
-    />
-    <FormItem
-      label="zip"
-      placeholder="11201"
-      onInput={(e) => {
-        setAddress({ ...address, zipcode: e.target.value })
-      }}
-    />
-
-    <button
-      onClick={(_) => {
-        handleFormSubmit()
-      }}
-      className="px-4 py-2 my-4 font-bold text-white bg-green-500 rounded transition duration-500 hover:bg-green-600 hover:shadow-xl"
+  <Bounce up>
+    <div
+      id="add-info-form"
+      className="z-10 flex flex-col items-center p-4 px-12 bg-gray-200 shadow-lg rounded-2xl bg-opactiy-0"
     >
-      Add Location
-    </button>
-  </div>
+      <PaperPlane className="h-16 mb-4" />
+      <h1 className="mb-4 text-2xl font-bold">Add Your Location</h1>
+
+      <FormItem
+        label="name"
+        placeholder="Jane Doe"
+        onInput={(e) => {
+          setName(e.target.value)
+        }}
+      />
+      <FormItem
+        label="street"
+        placeholder="123 Charming Ave"
+        onInput={(e) => {
+          setAddress({ ...address, street: e.target.value })
+        }}
+      />
+      <FormItem
+        label="unit"
+        placeholder="Apt 2"
+        onInput={(e) => {
+          setAddress({ ...address, secondary: e.target.value })
+        }}
+      />
+      <FormItem
+        label="city"
+        placeholder="New York"
+        onInput={(e) => {
+          setAddress({ ...address, city: e.target.value })
+        }}
+      />
+      <FormItem
+        label="state"
+        placeholder="New York"
+        onInput={(e) => {
+          setAddress({ ...address, state: e.target.value })
+        }}
+      />
+      <FormItem
+        label="zip"
+        placeholder="11201"
+        onInput={(e) => {
+          setAddress({ ...address, zipcode: e.target.value })
+        }}
+      />
+
+      <button
+        onClick={(_) => {
+          handleFormSubmit()
+        }}
+        className="px-4 py-2 my-4 font-bold text-white bg-green-500 rounded transition duration-500 hover:bg-green-600 hover:shadow-xl"
+      >
+        Add Location
+      </button>
+    </div>
+  </Bounce>
 )

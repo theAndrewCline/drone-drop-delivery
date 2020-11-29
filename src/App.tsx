@@ -6,6 +6,7 @@ import './tailwind.output.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/client'
 import { setupApollo } from './lib/apolloSetup'
+import { FormErrorPage } from './pages/FormError'
 
 const apolloClient = setupApollo()
 
@@ -35,9 +36,12 @@ function App() {
           <Route path="/users">
             <UsersPage />
           </Route>
+
+          <Route path="/form-error">
+            <FormErrorPage />
+          </Route>
         </Switch>
       </Router>
-
     </ApolloProvider>
   )
 }

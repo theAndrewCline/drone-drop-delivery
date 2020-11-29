@@ -13,6 +13,25 @@ type UserConfig = {
   address: Address
 }
 
+export const GET_USERS_QUERY = gql`
+  query GetUsers {
+    users {
+      data {
+        _id
+        name
+        address {
+          street
+          secondary
+          geo {
+            lat
+            lng
+          }
+        }
+      }
+    }
+  }
+`
+
 const ADD_USER = gql`
   mutation AddUser($user: UserInput!) {
     createUser(data: $user) {

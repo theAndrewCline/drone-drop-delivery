@@ -8,6 +8,7 @@ import { SignUpForm } from '../components/SignUpForm'
 
 export function SignUpPage() {
   const [shouldRedirect, setShouldRedirect] = useState(false)
+  const [error, setError] = useState(false)
 
   const [name, setName] = useState<string>('')
   const [address, setAddress] = useState<Address>({
@@ -18,29 +19,35 @@ export function SignUpPage() {
     zipcode: '',
     geo: {
       lat: 0,
-      lng: 0,
-    },
+      lng: 0
+    }
   })
 
   const createUser = useCreateUserMutation()
 
   function handleFormSubmit() {
-    // handle error
     validateAddress(address)
       .then((a: Address) => createUser({ name, address: a }))
       .then(() => {
         setShouldRedirect(true)
       })
-      .catch(console.error)
+      .catch((_) => {
+        setError(true)
+        setShouldRedirect(true)
+      })
   }
 
   switch (shouldRedirect) {
     case true:
-      return <Redirect to="/users" />
+      if (error) {
+        return <Redirect to="/form-error" />
+      } else {
+        return <Redirect to="/users" />
+      }
     case false:
       return (
         <Page>
-          <div className="flex items-center justify-center flex-col"></div>
+          <div className="flex flex-col items-center justify-center"></div>
           <SignUpForm
             handleFormSubmit={handleFormSubmit}
             setName={setName}
