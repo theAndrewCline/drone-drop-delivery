@@ -32,9 +32,7 @@ const client = SmartyStreets.buildClient.usStreet(credentials)
 
 const Lookup = usStreet.Lookup
 
-export type Lookup = typeof Lookup
-
-export function validateAddress(address: Address): Promise<Address> {
+export async function validateAddress(address: Address): Promise<Address> {
   let lookup = new Lookup()
   lookup.street = address.street
   lookup.secondary = address.secondary || ''
@@ -43,7 +41,8 @@ export function validateAddress(address: Address): Promise<Address> {
   lookup.zipCode = address.zipcode
   lookup.maxCandidates = 1
 
-  return client.send(lookup)
+  return client
+    .send(lookup)
     .then((data: any) => {
       if (data?.lookups[0]?.result?.length > 0) {
         return data.lookups[0].result[0]
