@@ -1,118 +1,27 @@
-import React, { useState } from 'react'
-import { Page } from './BasePage'
-import { DroneDelivery } from '../components/svg/DroneDelivery'
-import { Redirect } from 'react-router-dom'
-import { validateAddress, Address } from '../lib/address'
-import { useCreateUserMutation } from '../lib/user'
-import { SignUpForm } from '../components/SignUpForm'
-import Bounce from 'react-reveal/Bounce'
+import React from 'react'
+import firebase from 'firebase/app'
 
-export function SignUpPage() {
-  const [shouldRedirect, setShouldRedirect] = useState(false)
-  const [potentialAddress, setPotentialAddress] = useState<Address | undefined>(
-    undefined
+const provider = new firebase.auth.GoogleAuthProvider()
+
+const SignUp = () => {
+  const signInWithGoogle = async () => {
+    firebase.auth().signInWithPopup(provider)
+  }
+
+  return (
+    <div className="container mx-auto flex flex-col items-center">
+      <div className="flex flex-col items-center px-16 py-8 bg-gray-200 rounded shadow">
+        <h1 className="text-2xl font-bold text-black">Sign In</h1>
+        <hr className="w-full my-4 border border-gray-400" />
+        <button
+          onClick={signInWithGoogle}
+          className="px-4 py-2 mx-2 font-bold text-white bg-green-500 rounded shadow hover:shadow-lg hover:bg-green-400 transition focus:outline-none focus:ring-2 focus:ring-green-900"
+        >
+          Sign In With Google
+        </button>
+      </div>
+    </div>
   )
-  const [error, setError] = useState(false)
-
-  const [name, setName] = useState<string>('')
-  const [address, setAddress] = useState<Address>({
-    street: '',
-    secondary: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    geo: {
-      latitude: 0,
-      longitude: 0
-    }
-  })
-
-  const createUser = useCreateUserMutation()
-
-  function handleFormSubmit() {
-    validateAddress(address)
-      .then((a) => {
-        setPotentialAddress(a)
-      })
-      .catch((_) => {
-        setError(true)
-        setShouldRedirect(true)
-      })
-  }
-
-  function handleAddressConfirm() {
-    createUser({ name, address: (potentialAddress as unknown) as Address })
-      .then(() => {
-        setShouldRedirect(true)
-      })
-      .catch((_) => {
-        setError(true)
-        setShouldRedirect(true)
-      })
-  }
-
-  function handleAddressDeny() {
-    setPotentialAddress(undefined)
-  }
-
-  if (potentialAddress && !shouldRedirect) {
-    return (
-      <Page>
-        <Bounce up>
-          <div className="z-10 flex flex-col w-8/12 h-auto p-4 text-lg bg-gray-200 rounded-lg">
-            <h1 className="mb-2 font-bold">Is this your address?</h1>
-            <p>{potentialAddress.street}</p>
-            <p>{potentialAddress.secondary}</p>
-            <p>
-              {potentialAddress.city} {potentialAddress.state},{' '}
-              {potentialAddress.zipcode}
-            </p>
-            <div className="flex w-100%">
-              <button
-                className="flex-1 px-4 py-2 my-4 font-bold text-white bg-green-500 rounded transition duration-500 hover:bg-green-600 hover:shadow-xl"
-                onClick={() => handleAddressConfirm()}
-              >
-                Yes
-              </button>
-
-              <button
-                className="flex-1 px-4 py-2 my-4 ml-2 font-bold text-white bg-red-500 rounded transition duration-500 hover:bg-red-600 hover:shadow-xl"
-                onClick={() => handleAddressDeny()}
-              >
-                No
-              </button>
-            </div>
-          </div>
-        </Bounce>
-
-        <div className="absolute">
-          <DroneDelivery />
-        </div>
-      </Page>
-    )
-  }
-
-  switch (shouldRedirect) {
-    case true:
-      if (error) {
-        return <Redirect to="/form-error" />
-      } else {
-        return <Redirect to="/users" />
-      }
-    case false:
-      return (
-        <Page>
-          <SignUpForm
-            handleFormSubmit={handleFormSubmit}
-            setName={setName}
-            setAddress={setAddress}
-            address={address}
-          />
-
-          <div className="absolute">
-            <DroneDelivery />
-          </div>
-        </Page>
-      )
-  }
 }
+
+export default SignUp

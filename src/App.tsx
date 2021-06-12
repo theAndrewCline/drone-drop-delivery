@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import React, { useEffect } from 'react'
+import 'firebase/auth'
+import React from 'react'
 import {
   BrowserRouter as Router,
   Link,
@@ -11,7 +12,8 @@ import {
 import { PaperPlane } from './components/svg/PaperPlane'
 import Firestore from './Firestore'
 import { FormErrorPage } from './pages/FormError'
-import { SignUpPage } from './pages/SignUp'
+import { AddAddress } from './pages/AddAddress'
+import SignUp from './pages/SignUp'
 import { UsersPage } from './pages/Users'
 import './tailwind.output.css'
 
@@ -63,16 +65,6 @@ function Nav() {
 }
 
 function App() {
-  const getAddresses = async () => {
-    const querySnapshot = await db.collection('addresses').get()
-    const data = querySnapshot.docs.map((doc) => doc.data())
-    console.log(data)
-  }
-
-  useEffect(() => {
-    getAddresses()
-  }, [])
-
   return (
     <Firestore.Provider value={db}>
       <Router>
@@ -80,7 +72,11 @@ function App() {
 
         <Switch>
           <Route exact path="/">
-            <SignUpPage />
+            <SignUp />
+          </Route>
+
+          <Route path="/add-address">
+            <AddAddress />
           </Route>
 
           <Route path="/users">
