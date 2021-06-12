@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { Page } from './BasePage'
-import { DroneDelivery } from '../components/svg/DroneDelivery'
-import { Redirect } from 'react-router-dom'
-import { validateAddress, Address } from '../lib/address'
-import { useCreateUserMutation } from '../lib/user'
-import { SignUpForm } from '../components/SignUpForm'
 import Bounce from 'react-reveal/Bounce'
+import { Redirect } from 'react-router-dom'
+import { SignUpForm } from '../components/SignUpForm'
+import { DroneDelivery } from '../components/svg/DroneDelivery'
+import { Address, validateAddress } from '../lib/address'
+import { Page } from './BasePage'
 
 export function AddAddress() {
   const [shouldRedirect, setShouldRedirect] = useState(false)
@@ -16,6 +15,7 @@ export function AddAddress() {
 
   const [name, setName] = useState<string>('')
   const [address, setAddress] = useState<Address>({
+    id: '',
     street: '',
     secondary: '',
     city: '',
@@ -27,33 +27,11 @@ export function AddAddress() {
     }
   })
 
-  const createUser = useCreateUserMutation()
+  function handleFormSubmit() {}
 
-  function handleFormSubmit() {
-    validateAddress(address)
-      .then((a) => {
-        setPotentialAddress(a)
-      })
-      .catch((_) => {
-        setError(true)
-        setShouldRedirect(true)
-      })
-  }
+  function handleAddressConfirm() {}
 
-  function handleAddressConfirm() {
-    createUser({ name, address: (potentialAddress as unknown) as Address })
-      .then(() => {
-        setShouldRedirect(true)
-      })
-      .catch((_) => {
-        setError(true)
-        setShouldRedirect(true)
-      })
-  }
-
-  function handleAddressDeny() {
-    setPotentialAddress(undefined)
-  }
+  function handleAddressDeny() {}
 
   if (potentialAddress && !shouldRedirect) {
     return (

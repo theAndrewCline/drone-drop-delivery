@@ -1,26 +1,24 @@
+import firebase from 'firebase/app'
 import React, { useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import FirestoreContext from '../Firestore'
 import { Address } from '../lib/address'
-import { User } from '../lib/user'
 import { Page } from './BasePage'
 
-type ULIProps = {
-  user: User
+type AddressViewProps = {
+  address: Address
 }
 
-const UserLi = ({ user }: ULIProps) => (
+const AddressView: React.FC<AddressViewProps> = ({ address }) => (
   <li className="flex flex-col justify-between p-4 border-b-2 text-md last:border-b-0 md:flex-row">
-    <div className="flex items-center flex-1 font-bold">
-      <div className="w-2 h-2 mr-2 bg-green-300 rounded-full animate-pulse"></div>
-      <h1>{user.name}</h1>
-    </div>
     <div className="flex-1">
-      <h1>{user.address.street}</h1>
+      <p>
+        {address.street}, {address.city} {address.state}, {address.zipcode}
+      </p>
     </div>
-    <div className="flex-1">
+    <div>
       <h1>
-        Lat: {user.address.geo?.latitude || ''}, Long:{' '}
-        {user.address.geo?.longitude}
+        Lat: {address.geo.latitude || ''}, Long: {address.geo.longitude}
       </h1>
     </div>
   </li>
@@ -34,14 +32,34 @@ enum UsersPageState {
 
 const UserList = () => {
   const db = useContext(FirestoreContext)
+  const history = useHistory()
+  const [user, setUser] = useState<undefined | firebase.User>()
   const [addresses, setAddress] = useState<Address[]>([])
   const [pageState, setPageState] = useState<UsersPageState>(
     UsersPageState.Loading
   )
 
+  const checkAuthState = async () => {
+    const auth = firebase.auth()
+
+    auth.onAuthStateChanged((user_data) => {
+      if (user_data) {
+        setUser(user_data)
+      } else {
+        history.push('/')
+      }
+    })
+  }
+
   const getAddresses = async () => {
+    await checkAuthState()
+
     const querySnapshot = await db?.collection('addresses').get()
-    const data = querySnapshot?.docs.map((doc) => doc.data())
+    const data = querySnapshot?.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id
+    }))
+    console.log(data)
 
     if (data) {
       setAddress(data as Address[])
@@ -53,7 +71,7 @@ const UserList = () => {
 
   useEffect(() => {
     getAddresses()
-  })
+  }, [])
 
   switch (pageState) {
     case UsersPageState.Loading:
@@ -63,10 +81,14 @@ const UserList = () => {
     case UsersPageState.Users:
       return (
         <>
-          <h1 className="mb-4 ml-4 text-2xl font-bold">Active Users</h1>
+          <h1 className="mb-4 text-2xl font-bold">
+            Welcome, {user.displayName}
+          </h1>
+
+          <h1 className="mb-4 text-lg text-gray-500 font-bold">My Addresses</h1>
           <ul id="users" className="w-full bg-gray-100 rounded-lg shadow-lg">
             {addresses.map((addy) => (
-              <p>{JSON.stringify(addy)}</p>
+              <AddressView key={addy.id} address={addy} />
             ))}
           </ul>
         </>
@@ -74,7 +96,7 @@ const UserList = () => {
   }
 }
 
-export function UsersPage() {
+function Profile() {
   return (
     <Page>
       <div className="z-10 w-full">
@@ -83,3 +105,5 @@ export function UsersPage() {
     </Page>
   )
 }
+
+export default Profile

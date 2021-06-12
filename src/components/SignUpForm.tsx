@@ -47,7 +47,7 @@ export const SignUpForm = ({
       className="z-10 flex flex-col items-center p-4 px-12 bg-gray-200 shadow-lg rounded-2xl bg-opactiy-0"
     >
       <PaperPlane className="h-16 mb-4" />
-      <h1 className="mb-4 text-2xl font-bold">Add Your Location</h1>
+      <h1 className="mb-4 text-2xl font-bold">Add An Address</h1>
 
       <FormItem
         label="name"

@@ -1,11 +1,19 @@
 import React from 'react'
 import firebase from 'firebase/app'
+import { useHistory } from 'react-router-dom'
 
 const provider = new firebase.auth.GoogleAuthProvider()
 
 const SignUp = () => {
+  const history = useHistory()
+
   const signInWithGoogle = async () => {
-    firebase.auth().signInWithPopup(provider)
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((user) => {
+        history.push('/profile')
+      })
   }
 
   return (

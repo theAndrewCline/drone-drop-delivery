@@ -1,6 +1,8 @@
 import { core as SmartyStreets, usStreet } from 'smartystreets-javascript-sdk'
 
 export type Address = {
+  id: string
+  user_id?: string
   street: string
   secondary?: string
   city: string
@@ -14,6 +16,7 @@ export type Address = {
 
 export function resultToAddress(result: any): Address {
   return {
+    id: '',
     street: result.deliveryLine1,
     secondary: result.deliveryLine2,
     city: result.components.cityName,

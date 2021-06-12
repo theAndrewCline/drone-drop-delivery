@@ -1,20 +1,19 @@
 import firebase from 'firebase/app'
-import 'firebase/firestore'
 import 'firebase/auth'
+import 'firebase/firestore'
 import React from 'react'
 import {
   BrowserRouter as Router,
-  Link,
   Route,
   Switch,
   useRouteMatch
 } from 'react-router-dom'
 import { PaperPlane } from './components/svg/PaperPlane'
 import Firestore from './Firestore'
-import { FormErrorPage } from './pages/FormError'
 import { AddAddress } from './pages/AddAddress'
+import { FormErrorPage } from './pages/FormError'
 import SignUp from './pages/SignUp'
-import { UsersPage } from './pages/Users'
+import ProfilePage from './pages/Profile'
 import './tailwind.output.css'
 
 const firebaseConfig = {
@@ -30,9 +29,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 const db = firebase.firestore()
+const auth = firebase.auth()
 
 function Nav() {
-  const usersRoute = useRouteMatch('/users')
+  const usersRoute = useRouteMatch('/profile')
 
   if (usersRoute) {
     return (
@@ -42,11 +42,15 @@ function Nav() {
           <h1 className="ml-4 text-2xl font-bold text-green-600">
             Drone Drop Delivery
           </h1>
-          <Link to="/" className="ml-auto">
-            <button className="px-4 py-2 ml-auto font-bold text-white bg-green-500 rounded transition duration-500 hover:bg-green-600 hover:shadow-xl">
-              Sign Up
-            </button>
-          </Link>
+
+          <button
+            onClick={() => {
+              auth.signOut()
+            }}
+            className="px-4 py-2 ml-auto font-bold text-green-500 border-2 border-green-500 rounded transition duration-500 hover:bg-green-50  hover:shadow-xl"
+          >
+            Sign Out
+          </button>
         </nav>
       </div>
     )
@@ -79,8 +83,8 @@ function App() {
             <AddAddress />
           </Route>
 
-          <Route path="/users">
-            <UsersPage />
+          <Route path="/profile">
+            <ProfilePage />
           </Route>
 
           <Route path="/form-error">
