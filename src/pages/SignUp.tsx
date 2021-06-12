@@ -22,8 +22,8 @@ export function SignUpPage() {
     state: '',
     zipcode: '',
     geo: {
-      lat: 0,
-      lng: 0
+      latitude: 0,
+      longitude: 0
     }
   })
 

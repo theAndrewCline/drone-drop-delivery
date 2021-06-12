@@ -6,9 +6,9 @@ export type Address = {
   city: string
   state: string
   zipcode: string
-  geo: {
-    lat: number
-    lng: number
+  geo?: {
+    latitude: number
+    longitude: number
   }
 }
 
@@ -20,8 +20,8 @@ export function resultToAddress(result: any): Address {
     state: result.components.state,
     zipcode: result.components.zipCode,
     geo: {
-      lat: result.metadata.latitude,
-      lng: result.metadata.longitude
+      latitude: result.metadata.latitude,
+      longitude: result.metadata.longitude
     }
   }
 }

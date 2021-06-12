@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import React, { useContext, useEffect, useState } from 'react'
+import FirestoreContext from '../Firestore'
+import { Address } from '../lib/address'
+import { User } from '../lib/user'
 import { Page } from './BasePage'
-import { User, GET_USERS_QUERY } from '../lib/user'
 
 type ULIProps = {
   user: User
@@ -18,7 +19,8 @@ const UserLi = ({ user }: ULIProps) => (
     </div>
     <div className="flex-1">
       <h1>
-        Lat: {user.address.geo.lat}, Long: {user.address.geo.lng}
+        Lat: {user.address.geo?.latitude || ''}, Long:{' '}
+        {user.address.geo?.longitude}
       </h1>
     </div>
   </li>
@@ -31,24 +33,27 @@ enum UsersPageState {
 }
 
 const UserList = () => {
-  const { loading, error, data } = useQuery(GET_USERS_QUERY)
-  const [pageState, dispatch] = useState<UsersPageState>(UsersPageState.Loading)
-  const users = data?.users?.data
+  const db = useContext(FirestoreContext)
+  const [addresses, setAddress] = useState<Address[]>([])
+  const [pageState, setPageState] = useState<UsersPageState>(
+    UsersPageState.Loading
+  )
 
-  useEffect(() => {
-    if (error) console.error(error)
-  }, [error])
+  const getAddresses = async () => {
+    const querySnapshot = await db?.collection('addresses').get()
+    const data = querySnapshot?.docs.map((doc) => doc.data())
 
-  // DETERMINE'S VIEW STATE
-  useEffect(() => {
-    if (loading) {
-      dispatch(UsersPageState.Loading)
-    } else if (users?.length > 0) {
-      dispatch(UsersPageState.Users)
+    if (data) {
+      setAddress(data as Address[])
+      setPageState(UsersPageState.Users)
     } else {
-      dispatch(UsersPageState.NoUsers)
+      setPageState(UsersPageState.NoUsers)
     }
-  }, [loading, users])
+  }
+
+  useEffect(() => {
+    getAddresses()
+  })
 
   switch (pageState) {
     case UsersPageState.Loading:
@@ -60,8 +65,8 @@ const UserList = () => {
         <>
           <h1 className="mb-4 ml-4 text-2xl font-bold">Active Users</h1>
           <ul id="users" className="w-full bg-gray-100 rounded-lg shadow-lg">
-            {users.map((user: User) => (
-              <UserLi user={user} key={user._id} />
+            {addresses.map((addy) => (
+              <p>{JSON.stringify(addy)}</p>
             ))}
           </ul>
         </>
