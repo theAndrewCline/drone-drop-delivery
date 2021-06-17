@@ -1,17 +1,18 @@
 import firebase from 'firebase/app'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import FirestoreContext from '../Firestore'
+import FirestoreContext from '../Firebase'
 import { Address } from '../lib/address'
 import { Page } from './BasePage'
+import 'twin.macro'
 
 type AddressViewProps = {
   address: Address
 }
 
 const AddressView: React.FC<AddressViewProps> = ({ address }) => (
-  <li className="flex flex-col justify-between p-4 border-b-2 text-md last:border-b-0 md:flex-row">
-    <div className="flex-1">
+  <li tw="flex flex-col justify-between p-4 border-b-2 last:border-b-0 md:flex-row">
+    <div tw="flex-1">
       <p>
         {address.street}, {address.city} {address.state}, {address.zipcode}
       </p>
@@ -31,7 +32,7 @@ enum UsersPageState {
 }
 
 const UserList = () => {
-  const db = useContext(FirestoreContext)
+  const { firestore } = useContext(FirestoreContext)
   const history = useHistory()
   const [user, setUser] = useState<undefined | firebase.User>()
   const [addresses, setAddress] = useState<Address[]>([])
@@ -54,7 +55,7 @@ const UserList = () => {
   const getAddresses = async () => {
     await checkAuthState()
 
-    const querySnapshot = await db?.collection('addresses').get()
+    const querySnapshot = await firestore.collection('addresses').get()
     const data = querySnapshot?.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id
@@ -81,12 +82,10 @@ const UserList = () => {
     case UsersPageState.Users:
       return (
         <>
-          <h1 className="mb-4 text-2xl font-bold">
-            Welcome, {user.displayName}
-          </h1>
+          <h1 tw="mb-4 text-2xl font-bold">Welcome, {user.displayName}</h1>
 
-          <h1 className="mb-4 text-lg text-gray-500 font-bold">My Addresses</h1>
-          <ul id="users" className="w-full bg-gray-100 rounded-lg shadow-lg">
+          <h1 tw="mb-4 text-lg text-gray-500 font-bold">My Addresses</h1>
+          <ul id="users" tw="w-full bg-gray-100 rounded-lg shadow-lg">
             {addresses.map((addy) => (
               <AddressView key={addy.id} address={addy} />
             ))}
@@ -99,7 +98,7 @@ const UserList = () => {
 function Profile() {
   return (
     <Page>
-      <div className="z-10 w-full">
+      <div tw="z-10 w-full">
         <UserList />
       </div>
     </Page>

@@ -1,8 +1,5 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { loader } from 'graphql.macro'
-
-const typeDefs = loader('../graphql/schema.graphql')
 
 export function setupApollo() {
   const httpLink = createHttpLink({
@@ -22,7 +19,6 @@ export function setupApollo() {
 
   return new ApolloClient({
     cache: new InMemoryCache(),
-    link: authLink.concat(httpLink),
-    typeDefs
+    link: authLink.concat(httpLink)
   })
 }

@@ -1,10 +1,7 @@
 import React from 'react'
+import 'twin.macro'
 
-type Props = {
-  className: string
-}
-
-export function PaperPlane({ className }: Props) {
+export function PaperPlane() {
   return (
     <svg
       version="1.1"
@@ -16,7 +13,7 @@ export function PaperPlane({ className }: Props) {
       viewBox="0 0 512.027 512.027"
       enableBackground="new 0 0 512.027 512.027"
       xmlSpace="preserve"
-      className={className}
+      tw="h-12"
     >
       <g transform="translate(0 -1)">
         <path
