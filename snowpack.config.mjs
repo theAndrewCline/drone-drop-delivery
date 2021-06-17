@@ -10,5 +10,8 @@ export default {
       src: '.*',
       dest: '/index.html'
     }
-  ]
+  ],
+  devOptions: {
+    port: 3000
+  }
 }
